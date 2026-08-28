@@ -23,6 +23,10 @@ Requires [`jq`](https://jqlang.github.io/jq/) on your `PATH`.
 
 Restart your session afterwards — hooks and skills load at session start.
 
+The commands below are written in their short form. If another plugin or
+command already claims that name, address them in full instead:
+`/devops-mentor:mentor`, `/devops-mentor:exam`.
+
 ## The two modes
 
 <!-- TRANSCRIPT PENDING: both dialogues below must be replaced with real
