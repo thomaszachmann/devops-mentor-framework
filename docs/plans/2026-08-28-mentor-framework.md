@@ -797,6 +797,15 @@ git commit -m "feat: guard file writes while mentor mode is active"
 
 ### Task 7: Register the hooks and run everything end to end
 
+**Split during execution (2026-08-28).** The learner asked to try mentor mode
+before the probe in Task 1 had been run, so this task was done in two halves:
+
+- **7a, done:** `hooks/hooks.json` with the `UserPromptSubmit` entry only, plus
+  `tests/run.sh`. Nothing here depends on the probe.
+- **7b, pending:** add the `PreToolUse` entry once Task 6 exists. The end-to-end
+  walkthrough in Step 5 below belongs to 7b.
+
+
 **Files:**
 - Create: `hooks/hooks.json`
 - Create: `tests/run.sh`
