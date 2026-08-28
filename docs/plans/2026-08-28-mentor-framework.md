@@ -1200,6 +1200,23 @@ git commit -m "feat: add the exam skill and /exam command"
 
 ### Task 12: README, contributing guide and authoring guide
 
+**Incomplete on purpose (2026-08-28).** Everything except the two transcripts
+in the README is written. The transcripts must come from real sessions, so
+they wait for a live mentor session and a live exam. Two consequences:
+
+- `README.md` carries an HTML comment marking the gap, plus two visible
+  `_A real transcript goes here._` lines.
+- **Step 6's `git tag v0.1.0` is deliberately not done.** The tag is the gate:
+  no release while the README still advertises a demo that was never run. A
+  project about honest practice cannot ship an invented transcript.
+
+One correction to Step 1 from what was actually observed: the local install
+form in this plan was wrong. `claude plugin marketplace add .` is rejected;
+the path must start with `./` and the command must run from the parent
+directory. The GitHub form in the README is unaffected. CONTRIBUTING.md
+documents the local form.
+
+
 **Files:**
 - Modify: `README.md`, `CONTRIBUTING.md`
 - Create: `docs/authoring-topics.md`
