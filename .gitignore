@@ -1,0 +1,7 @@
+# Learner state must never enter the repository.
+.devops-mentor/
+*profile.json
+*state.json
+
+# Local editor / OS noise
+.DS_Store

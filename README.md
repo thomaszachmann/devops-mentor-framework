@@ -1,6 +1,6 @@
 # Mentor Framework
 
-Mentor Framwork to Learn and train technical skills.
+Mentor Framework to Learn and train technical skills.
 
 
 
