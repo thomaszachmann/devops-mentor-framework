@@ -220,7 +220,24 @@ not an essay — covering:
   the learner asking to be told.
 - **One thing to practise**, concrete enough to start today.
 
-Then write the topics covered to the profile.
+Then record the session. If a misconception surfaced, store it against the
+competency so the next session and the next exam both see it:
+
+```
+bash -c 'lib="${CLAUDE_PLUGIN_ROOT}/lib/state.sh"; . "$lib"; mentor_record_result "TOPIC" "COMPETENCY" LEVEL "MISCONCEPTION"'
+```
+
+Use the level you actually observed, conservatively — a mentor session is not
+an exam, so prefer the lower reading when unsure, and leave the level alone by
+omitting the call entirely if you saw too little to judge. Reuse the same
+competency key the matrix and earlier runs use; a new spelling starts an
+unrelated history.
+
+Always record the rung the session reached:
+
+```
+bash -c 'lib="${CLAUDE_PLUGIN_ROOT}/lib/state.sh"; . "$lib"; mentor_record_exit "TOPIC" RUNG'
+```
 
 If the learner exited early, record it plainly and without comment. Exiting is
 a normal move, not a failure, and the record exists so the topic comes back —

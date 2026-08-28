@@ -70,3 +70,59 @@ mentor_profile_summary() { # <topic>
          then " (watch: " + (.value.misconceptions[0]) + ")" else "" end)
     ) | .[]' "$MENTOR_PROFILE_FILE" 2>/dev/null || return 0
 }
+
+# --- profile writers -------------------------------------------------------
+# The exam writes results here and the mentor records early exits. Both go
+# through this file so the shape stays in one place: mentor_profile_summary
+# has to be able to read back whatever these write.
+
+mentor__ensure_profile() {
+  mkdir -p "$MENTOR_HOME" 2>/dev/null || return 1
+  if ! jq empty "$MENTOR_PROFILE_FILE" >/dev/null 2>&1; then
+    printf '{"version":1,"topics":{},"mentor_sessions":[]}' \
+      > "$MENTOR_PROFILE_FILE" 2>/dev/null || return 1
+  fi
+  return 0
+}
+
+mentor_record_result() { # <topic> <competency> <level 0-3> [misconception]
+  local tmp level
+  mentor_have_jq || return 0
+  # Validate explicitly rather than trusting the caller: an unparseable level
+  # would make jq --argjson fail and silently drop the whole result.
+  level="${3:-0}"
+  case "$level" in 0|1|2|3) ;; *) level=0 ;; esac
+  mentor__ensure_profile || return 0
+  tmp="$MENTOR_PROFILE_FILE.tmp.$$"
+  jq --arg t "$1" --arg c "$2" --argjson l "$level" --arg m "${4:-}" \
+     --arg d "$(date -u +%Y-%m-%d)" '
+     .version = 1
+     | .topics[$t][$c].level = $l
+     | .topics[$t][$c].last_assessed = $d
+     | .topics[$t][$c].misconceptions =
+         (((.topics[$t][$c].misconceptions // [])
+           + (if $m == "" then [] else [$m] end)) | unique)
+     ' "$MENTOR_PROFILE_FILE" > "$tmp" 2>/dev/null \
+    && mv "$tmp" "$MENTOR_PROFILE_FILE" 2>/dev/null
+  rm -f "$tmp" 2>/dev/null
+  return 0
+}
+
+mentor_record_exit() { # <topic> <rung 1-5>
+  local tmp rung
+  mentor_have_jq || return 0
+  rung="${2:-0}"
+  case "$rung" in 1|2|3|4|5) ;; *) rung=0 ;; esac
+  mentor__ensure_profile || return 0
+  tmp="$MENTOR_PROFILE_FILE.tmp.$$"
+  # Keep only the last 20 so the file cannot grow without bound.
+  jq --arg t "$1" --argjson r "$rung" --arg d "$(date -u +%Y-%m-%d)" '
+     .version = 1
+     | .mentor_sessions =
+         (((.mentor_sessions // [])
+           + [{date:$d, topic:$t, exited_at_rung:$r}]) | .[-20:])
+     ' "$MENTOR_PROFILE_FILE" > "$tmp" 2>/dev/null \
+    && mv "$tmp" "$MENTOR_PROFILE_FILE" 2>/dev/null
+  rm -f "$tmp" 2>/dev/null
+  return 0
+}

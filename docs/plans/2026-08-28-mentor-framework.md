@@ -1128,6 +1128,20 @@ git commit -m "feat: add competency matrix format and Kubernetes matrix"
 
 ### Task 11: The exam skill and /exam command
 
+**Gap found during execution (2026-08-28).** Task 4 defined profile *readers*
+only, but this task requires the exam to write results. Rather than have the
+skill hand-roll jq one-liners, two writers were added to `lib/state.sh` —
+`mentor_record_result <topic> <competency> <level> [misconception]` and
+`mentor_record_exit <topic> <rung>` — with tests, including a round-trip test
+asserting that what the exam writes is what `mentor_profile_summary` reads
+back. That contract is the one whose failure would be invisible: the mentor
+would simply stop adapting. Both writers validate their numeric argument
+explicitly, because an unparseable value would make `jq --argjson` fail and
+silently drop the whole result. `mentor_sessions` is capped at the last 20
+entries. Per the Task 8 note, the exam controls live in `skills/exam/SKILL.md`
+and there is no `commands/exam.md`.
+
+
 **Files:**
 - Create: `skills/exam/SKILL.md`, `commands/exam.md`
 
