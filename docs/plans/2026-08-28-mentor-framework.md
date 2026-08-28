@@ -16,7 +16,7 @@
 - **`MENTOR_HOME` overrides `~/.devops-mentor`.** Every script reads its state root from `${MENTOR_HOME:-$HOME/.devops-mentor}`. This is what makes the scripts testable without touching the developer's real profile. No script may hardcode `$HOME/.devops-mentor`.
 - **No learner data in the repo, ever.** State and profile live under `MENTOR_HOME` only.
 - **Injected context stays under 400 tokens.** Measured in Task 5, not assumed.
-- **bash 3.2 compatible.** No `declare -A`, no `${var^^}`, no `mapfile`. Stock macOS ships bash 3.2.
+- **bash 3.2 compatible.** No `declare -A`, no `${var^^}`, no `mapfile`. Stock macOS ships bash 3.2. Development machines typically run a newer bash from Homebrew, so `tests/run.sh` re-runs the whole suite under `/bin/bash` to make this constraint verified rather than asserted.
 - **Plugin name:** `devops-mentor`. **Marketplace name:** `devops-mentor-framework`. Install is therefore `/plugin install devops-mentor@devops-mentor-framework`.
 - **License:** MIT, `Copyright (c) 2026 Thomas Zachmann`.
 - **Docs language:** English (matches existing `docs/vision.md`, `docs/principles.md`).
@@ -849,6 +849,21 @@ for t in test_*.sh; do
   printf '\n== %s ==\n' "$t"
   ./"$t" || fail=1
 done
+
+# The global constraint says bash 3.2. Development machines usually run a
+# much newer bash from Homebrew, so a green suite here proves nothing about
+# a stock macOS. /bin/bash on macOS is 3.2 - run everything again under it.
+if [ -x /bin/bash ] && /bin/bash --version | head -1 | grep -q 'version 3'; then
+  printf '\n== re-running under /bin/bash (3.2) ==\n'
+  for t in test_*.sh; do
+    /bin/bash ./"$t" >/dev/null 2>&1 \
+      && printf 'ok   %s under bash 3.2\n' "$t" \
+      || { printf 'FAIL %s under bash 3.2\n' "$t"; fail=1; }
+  done
+else
+  printf '\nnote: no bash 3.2 available, 3.2 compatibility unverified\n'
+fi
+
 printf '\n'
 [ "$fail" = 0 ] && echo "ALL TESTS PASSED" || echo "SOME TESTS FAILED"
 exit "$fail"
