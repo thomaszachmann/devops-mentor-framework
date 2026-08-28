@@ -1,0 +1,10 @@
+{
+  "name": "devops-mentor",
+  "displayName": "DevOps Mentor Framework",
+  "version": "0.1.0",
+  "description": "Turns Claude Code into a mentor and examiner instead of an author. Build better engineers, not better prompts.",
+  "author": { "name": "Thomas Zachmann" },
+  "repository": "https://github.com/thomaszachmann/devops-mentor-framework",
+  "license": "MIT",
+  "keywords": ["mentoring", "learning", "devops", "training", "assessment"]
+}

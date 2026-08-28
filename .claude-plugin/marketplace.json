@@ -1,0 +1,13 @@
+{
+  "name": "devops-mentor-framework",
+  "owner": { "name": "Thomas Zachmann",
+             "url": "https://github.com/thomaszachmann" },
+  "description": "Skills that make Claude Code teach instead of solve.",
+  "plugins": [
+    {
+      "name": "devops-mentor",
+      "source": "./",
+      "description": "Mentor and Exam skills for deliberate technical practice."
+    }
+  ]
+}
