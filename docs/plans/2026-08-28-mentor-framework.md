@@ -917,6 +917,18 @@ git commit -m "feat: register both hooks with the plugin"
 
 ### Task 8: The /mentor command
 
+**Superseded during execution (2026-08-28).** `commands/mentor.md` and
+`skills/mentor/SKILL.md` both resolve to a component named `mentor`, which
+`claude plugin details` reports as `Skills (2) mentor, mentor` — a collision
+`claude plugin validate` does not catch. The command was folded into the skill
+as its first section, and `commands/` was removed. This is also the direction
+the plugin documentation points, since `commands/` is described as deprecated
+in favour of `skills/`, and it has a runtime benefit: `/mentor on` now loads
+the craft guidance in the same invocation that sets the mode, instead of
+hoping the skill gets picked up separately. Task 11 must therefore put the
+exam controls in `skills/exam/SKILL.md` rather than in `commands/exam.md`.
+
+
 **Files:**
 - Create: `commands/mentor.md`
 
