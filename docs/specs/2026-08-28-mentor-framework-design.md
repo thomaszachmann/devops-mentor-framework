@@ -287,7 +287,17 @@ misconceptions. Less maintenance, slower decay.
 3. **Grading consistency is unproven.** Whether the same answer graded twice
    against the same rubric yields the same level is an empirical question.
    Worth testing on the Kubernetes matrix before adding more topics.
-4. **The rung marker depends on compliance.** Unlike the write guard, nothing
+4. **The write guard is a speed bump, not a sandbox.** It matches on tool
+   names, so `Edit`, `Write` and `NotebookEdit` are covered, but a file
+   written through `Bash` (`cat > file`, `tee`, `sed -i`) is not. Blocking
+   `Bash` is not an option: the mentor has to be able to run the learner's
+   tests. Pattern-matching shell commands for redirection would be fragile
+   and would fire constantly on legitimate commands. This is accepted: the
+   guard exists to stop the unconscious slide into "just write it for me",
+   not to defeat a learner who has decided to route around it. Someone
+   determined to get the answer can already type `/mentor off`.
+
+5. **The rung marker depends on compliance.** Unlike the write guard, nothing
    enforces that the stated rung matches the answer given. It is visible to
    the user, which is the mitigation.
 

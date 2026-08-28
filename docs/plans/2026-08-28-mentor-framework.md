@@ -802,8 +802,12 @@ before the probe in Task 1 had been run, so this task was done in two halves:
 
 - **7a, done:** `hooks/hooks.json` with the `UserPromptSubmit` entry only, plus
   `tests/run.sh`. Nothing here depends on the probe.
-- **7b, pending:** add the `PreToolUse` entry once Task 6 exists. The end-to-end
-  walkthrough in Step 5 below belongs to 7b.
+- **7b, done:** the `PreToolUse` entry was added together with Task 6. The
+  probe from Task 1 was never run in isolation; instead the guard was
+  registered so that the learner's next live session verifies it as a
+  by-product. If `"ask"` turns out to block outright, change the one literal
+  in `hooks/guard-writes.sh` and the `want_decision` variable in
+  `tests/test_guard.sh`.
 
 
 **Files:**
